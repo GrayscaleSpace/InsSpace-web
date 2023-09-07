@@ -18,10 +18,10 @@ jobs:
         # 使用action库  actions/checkout获取源码
         uses: actions/checkout@v3 # 使用的工具
       # 使用 npm
-      - name: 使用 npm
-        uses: npm/action-setup@v2
-        with:
-          version: 8.5.0
+#      - name: 使用 npm
+#        uses: npm/action-setup@v2
+#        with:
+#          version: 8.5.0
       # 安装node
       - name: 安装node.js
         # 使用action库 actions/setup-node 安装node
