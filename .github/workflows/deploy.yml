@@ -37,13 +37,12 @@ jobs:
         run: npm run build
       # 上传打包文件到远程服务器
       - name: 上传文件到远程服务器
-        uses: webfactory/ssh-agent@v0.5.3
+        uses: appleboy/ssh-action@master
         with:
+          host: ${{ secrets.DEPLOY_SERVER_HOST }}
           username: 'root'
-          server: ${{ secrets.DEPLOY_SERVER_HOST }}
-          port: ${{ secrets.DEPLOY_SERVER_PORT }}
-          ssh_private_key: ${{ secrets.DEPLOY_KEY }}
-          # 要上传文件所在目录
-          local_path: './dist/*'
-          # 远程服务器目标路径
-          target_path: '/www/wwwroot/pan.reaicc.com'
+          password: ${{ secrets.DEPLOY_PASSWORD }}
+          script: |
+            # 在这里添加要执行的远程命令，例如上传文件的SCP命令
+            scp -P ${{ secrets.DEPLOY_SERVER_PORT }} -r ./dist/* root@${{ secrets.DEPLOY_SERVER_HOST }}:/www/wwwroot/pan.reaicc.com
+
