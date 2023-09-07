@@ -36,10 +36,10 @@ jobs:
       - name: 打包
         run: npm run build
       # 上传打包文件到远程服务器
-      - name: Install sshpass
-        run: sudo apt-get install -y sshpass
-
       - name: Upload Code to CentOS
         run: |
+          # 安装 sshpass 工具
+          sudo apt-get update
+          sudo apt-get install -y sshpass
           # 使用 sshpass 命令将文件上传到远程服务器
           sshpass -p ${{ secrets.SERVER_PASSWORD }} scp -r './dist/*' root@8.140.45.252:/www/wwwroot/pan.reaicc.com
