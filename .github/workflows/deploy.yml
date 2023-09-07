@@ -40,8 +40,8 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           username: 'root'
-          password: ${{ secrets.DEPLOY_PASSWORD }}
-          server: ${{ secrets.DEPLOY_SERVER_HOST }}
+          password: 1919101871.Cxp
+          server: 8.140.45.252
           port: 22
 #          ssh_private_key: ${{ secrets.DEPLOY_KEY }}
           # 要上传文件所在目录
