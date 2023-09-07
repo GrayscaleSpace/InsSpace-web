@@ -31,10 +31,10 @@ jobs:
           cache: 'npm'
       # 安装
       - name: 安装依赖
-        run: npm run install
+        run: npm install
       # 打包
       - name: 打包
-        run: npm build
+        run: npm run build
       # 上传打包文件到远程服务器
       - name: 上传文件到远程服务器
         uses: webfactory/ssh-agent@v0.5.3
