@@ -44,5 +44,5 @@ jobs:
           password: ${{ secrets.DEPLOY_PASSWORD }}
           script: |
             # 在这里添加要执行的远程命令，例如上传文件的SCP命令
-            scp -P ${{ secrets.DEPLOY_SERVER_PORT }} -r ./dist/* root@${{ secrets.DEPLOY_SERVER_HOST }}:/www/wwwroot/pan.reaicc.com
+            scp -P ${{ secrets.DEPLOY_SERVER_HOST }} -r ./dist/* root@${{ secrets.DEPLOY_SERVER_PORT }}:/www/wwwroot/pan.reaicc.com
 
