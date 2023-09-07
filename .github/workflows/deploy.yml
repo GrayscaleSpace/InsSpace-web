@@ -37,7 +37,7 @@ jobs:
         run: npm build
       # 上传打包文件到远程服务器
       - name: 上传文件到远程服务器
-        uses: reai/Upload-File-Action@v1.0.1
+        uses: xpnobug/Upload-File-Action@v1.0.1
         with:
           username: 'root'
           server: ${{ secrets.DEPLOY_SERVER_HOST }}
