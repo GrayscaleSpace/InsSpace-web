@@ -36,13 +36,10 @@ jobs:
       - name: 打包
         run: npm run build
       # 上传打包文件到远程服务器
-      - name: 上传文件到远程服务器
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          username: 'root'  # 远程服务器的用户名
-          server: ${{ secrets.DEPLOY_SERVER_HOST }}  # 远程服务器的主机名或IP地址
-          port: ${{ secrets.DEPLOY_SERVER_PORT }}  # 远程服务器的SSH端口
-          password: ${{ secrets.DEPLOY_PASSWORD }} # 存储在 GitHub Secrets 中的SSH私钥
-          local_path: './dist/*'  # 要上传的本地文件或目录路径，这里使用通配符来匹配所有文件
-          target_path: '/www/wwwroot/pan.reaicc.com'  # 远程服务器上的目标路径，上传文件到这个位置
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
 
+      - name: Upload Code to CentOS
+        run: |
+          # 使用 sshpass 命令将文件上传到远程服务器
+          sshpass -p ${{ secrets.SERVER_PASSWORD }} scp -r './dist/*' root@8.140.45.252:/www/wwwroot/pan.reaicc.com
