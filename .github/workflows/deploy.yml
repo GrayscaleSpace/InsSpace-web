@@ -45,4 +45,4 @@ jobs:
           port: ${{ secrets.DEPLOY_SERVER_PORT }} # 服务器端口，默认22；
           run: |
            # 使用 sshpass 命令将文件上传到远程服务器
-           scp -P 22 -r ./dist/* root@8.140.45.252:/www/wwwroot/pan.reaicc.com
+           scp -P 22 -r dist/* root@8.140.45.252:/www/wwwroot/pan.reaicc.com
