@@ -45,7 +45,11 @@ jobs:
             # 装依赖
             - name: 安装依赖
               run: npm install
-
+              
+            - name: List Files in Workspace
+              run: |
+                ls -l
+                ls -l ./dist
             # 打包
             - name: 打包
               run: npm run build
