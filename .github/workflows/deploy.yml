@@ -71,7 +71,7 @@ jobs:
               uses: appleboy/ssh-action@v0.1.10
               with:
                   host: ${{ secrets.DEPLOY_SERVER_HOST }} # 服务器ip地址 ; 需要去仓库的 settings/secrets/actions 去创建
-                  username: "root" # 服务器用户名称；需要去仓库的 settings/secrets/actions 去创建
+                  username: root # 服务器用户名称；需要去仓库的 settings/secrets/actions 去创建
                   password: ${{ secrets.DEPLOY_PASSWORD }} # 服务器密码；需要去仓库的 settings/secrets/actions 去创建
                   port: ${{ secrets.DEPLOY_SERVER_PORT }} # 服务器端口，默认22；需要去仓库的 settings/secrets/actions 去创建
                   script: |
