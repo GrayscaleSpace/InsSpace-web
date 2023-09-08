@@ -51,7 +51,9 @@ jobs:
               run: 
                   npm run build
                   sudo apt-get install -y sshpass
- 
+            - name: Install sshpass
+              run: sudo apt-get install -y sshpass
+
             # 上传打包资源
             - name: 上传打包资源
               # uses: easingthemes/ssh-deploy@main
