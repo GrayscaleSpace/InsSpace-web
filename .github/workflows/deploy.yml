@@ -50,7 +50,7 @@ jobs:
             - name: 打包
               run: 
                   npm run build
-                  sudo apt-get install -y sshpass
+
             - name: Install sshpass
               run: sudo apt-get install -y sshpass
 
