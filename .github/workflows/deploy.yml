@@ -1,4 +1,4 @@
-name: note build
+name: main
 # 触发workflow的条件
 on:
     push:
@@ -52,17 +52,11 @@ jobs:
 
             # 上传打包资源
             - name: 上传打包资源
-              uses: cross-the-world/ssh-scp-ssh-pipelines@latest
-              with:
-                host: ${{ env.SERVER_HOST }}
-                user: ${{ env.USER_NAME }}
-                pass: ${{ secrets.DEPLOY_PASSWORD }}
-                scp: |
-                  ./dist/* => /www/wwwroot/pan.reaicc.com
- 
-                  # SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
-                  # ARGS: '-avz --delete'
-                  # SOURCE: 'dist/'
-                  # REMOTE_HOST: ${{ env.DEPLOY_KEY }}
-                  # REMOTE_USER: ${{ env.USER_NAME }}
-                  # TARGET: /www/wwwroot/pan.reaicc.com # 服务器目标路径
+              uses: easingthemes/ssh-deploy@v5
+              env:
+                  SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
+                  ARGS: '-avz --delete'
+                  SOURCE: 'dist/'
+                  REMOTE_HOST: ${{ env.DEPLOY_KEY }}
+                  REMOTE_USER: ${{ env.USER_NAME }}
+                  TARGET: /www/wwwroot/pan.reaicc.com # 服务器目标路径
