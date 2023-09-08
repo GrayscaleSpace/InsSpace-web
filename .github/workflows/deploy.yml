@@ -24,7 +24,7 @@ jobs:
             - name: 安装node.js
               uses: actions/setup-node@v3
               with:
-                  node-version: 16.18.1
+                  node-version: 16
                   cache: 'npm'
             #缓存依赖
             - name: 缓存依赖
