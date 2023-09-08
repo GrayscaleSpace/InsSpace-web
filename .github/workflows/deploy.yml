@@ -18,7 +18,7 @@ jobs:
     build: # 任务的job_id，具体名称自定义，这里build代表打包
         runs-on: ubuntu-latest # runs-on字段指定运行所需要的虚拟机环境。注意：这个是必填字段
         steps:
-            - uses: actions/checkout@master
+            - uses: actions/checkout@v3
 
             # 安装node
             - name: 安装node.js
@@ -28,7 +28,7 @@ jobs:
                   cache: 'npm'
             #缓存依赖
             - name: 缓存依赖
-              uses: actions/cache@v1
+              uses: actions/checkout@v3
               env:
                   cache-name: cache-node-modules
               with:
