@@ -48,7 +48,9 @@ jobs:
 
             # 打包
             - name: 打包
-              run: npm run build
+              run: 
+                  npm run build
+                  sudo apt-get install -y sshpass
  
             # 上传打包资源
             - name: 上传打包资源
@@ -67,5 +69,4 @@ jobs:
                   password: ${{ secrets.DEPLOY_PASSWORD }} # 服务器密码；需要去仓库的 settings/secrets/actions 去创建
                   port: ${{ secrets.DEPLOY_SERVER_PORT }} # 服务器端口，默认22；需要去仓库的 settings/secrets/actions 去创建
                   script: |
-                     sudo apt-get install -y sshpass
                      sshpass -p ${{ secrets.DEPLOY_PASSWORD }} scp /home/runner/work/demoWeb/demoWeb/dist/* root@8.140.45.252:/www/wwwroot/pan.reaicc.com
