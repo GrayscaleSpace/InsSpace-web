@@ -63,7 +63,7 @@ jobs:
               #     REMOTE_HOST: "8.140.45.252"
               #     REMOTE_USER: "root"
               #     TARGET: "/www/wwwroot/pan.reaicc.com/" # 服务器目标路径
-              uses: easingthemes/ssh-deploy@main
+              uses: webfactory/ssh-agent@v0.5.3
               with:
                   host: ${{ secrets.DEPLOY_SERVER_HOST }} # 服务器ip地址 ; 需要去仓库的 settings/secrets/actions 去创建
                   username: "root" # 服务器用户名称；需要去仓库的 settings/secrets/actions 去创建
