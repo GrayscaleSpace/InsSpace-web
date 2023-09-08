@@ -75,4 +75,4 @@ jobs:
                   password: ${{ secrets.DEPLOY_PASSWORD }} # 服务器密码；需要去仓库的 settings/secrets/actions 去创建
                   port: ${{ secrets.DEPLOY_SERVER_PORT }} # 服务器端口，默认22；需要去仓库的 settings/secrets/actions 去创建
                   script: |
-                     sshpass -p ${{ secrets.DEPLOY_PASSWORD }} scp -P ${{ secrets.DEPLOY_SERVER_PORT }} -r ./dist/ root@8.140.45.252:/www/wwwroot/pan.reaicc.com/
+                     scp -P ${{ secrets.DEPLOY_SERVER_PORT }} -r ./dist/ root@8.140.45.252:/www/wwwroot/pan.reaicc.com/
