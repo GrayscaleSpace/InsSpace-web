@@ -52,7 +52,7 @@ jobs:
 
             # 上传打包资源
             - name: 上传打包资源
-              uses: easingthemes/ssh-deploy@v3.0.7
+              uses: appleboy/ssh-action@v0.1.10
               env:
                   SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
                   ARGS: '-avz --delete'
