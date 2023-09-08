@@ -1,49 +1,60 @@
-name: build and deploy demoChat
-# 触发脚本的条件，develop分支push代码的时候
+name: note build
+# 触发workflow的条件
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-# 要执行的任务
+    push:
+        # 只有master分支发生push事件时，才会触发workflow
+        branches: [master]
+    pull_request:
+        branches: [master]
+
+env:
+    SERVER_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }} # 服务器私钥
+    SERVER_HOST: ${{ secrets.DEPLOY_SERVER_HOST }} # 服务器IP地址
+    USER_NAME: root # 服务器用户名
+    cache-name: note
+
+# jobs表示执行的一项或多项任务
 jobs:
-  # 任务名称
-  build_and_deploy:
-    # runs-on 指定job任务运行所需要的虚拟机环境（必填）
-    runs-on: ubuntu-latest
-    # 任务步骤
-    steps:
-      # 获取源码
-      - name: 迁出代码
-        # 使用action库  actions/checkout获取源码
-        uses: actions/checkout@v3 # 使用的工具
-      # 使用 npm
-      #      - name: 使用 npm
-      #        uses: npm/action-setup@v2
-      #        with:
-      #          version: 8.5.0
-      # 安装node
-      - name: 安装node.js
-        # 使用action库 actions/setup-node 安装node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.18.1
-          cache: 'npm'
-      # 安装
-      - name: 安装依赖
-        run: npm install
-      # 打包
-      - name: 打包
-        run: npm run build
-      # 上传打包文件到远程服务器
-      - name: 更新服务器
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.DEPLOY_SERVER_HOST }} # 服务器ip地址
-          username: root # 服务器用户名称；
-          password: ${{ secrets.DEPLOY_PASSWORD }} # 服务器密码；
-          port: ${{ secrets.DEPLOY_SERVER_PORT }} # 服务器端口，默认22；
-          # 要上传文件所在目录
-          local_path: './dist/*'
-          # 远程服务器目标路径
-          target_path: '/www/wwwroot/pan.reaicc.com/'
+    build: # 任务的job_id，具体名称自定义，这里build代表打包
+        runs-on: ubuntu-latest # runs-on字段指定运行所需要的虚拟机环境。注意：这个是必填字段
+        steps:
+            - uses: actions/checkout@master
+
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: v14.17.0
+
+            #缓存依赖
+            - name: Cache nodemodules
+              uses: actions/cache@v1
+              env:
+                  cache-name: cache-node-modules
+              with:
+                  # 需要缓存的文件的路径
+                  path: ./node_modules 
+                  # 对缓存的文件指定的唯一标识
+                  key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package.json') }} 
+                  # 用于没有再找目标key的缓存的backup选项
+                  restore-keys: |
+                      ${{ runner.os }}-build-${{ env.cache-name }}-
+                      ${{ runner.os }}-build-
+                      ${{ runner.os }}-
+
+            # 装依赖
+            - name: Install
+              run: npm install
+
+            # 打包
+            - name: Build
+              run: npm run build
+
+            # 上传打包资源
+            - name: Deploy
+              uses: easingthemes/ssh-deploy@v2.0.7
+              env:
+                  SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
+                  ARGS: '-avz --delete'
+                  SOURCE: 'dist/'
+                  REMOTE_HOST: ${{ env.DEPLOY_KEY }}
+                  REMOTE_USER: ${{ env.USER_NAME }}
+                  TARGET: /www/wwwroot/pan.reaicc.com # 服务器目标路径
