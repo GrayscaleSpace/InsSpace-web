@@ -52,12 +52,11 @@ jobs:
 
             # 上传打包资源
             - name: 上传打包资源
-              uses: appleboy/ssh-action@v0.1.10
+              uses: easingthemes/ssh-deploy@v2.0.7
               env:
                   SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
                   ARGS: '-avz --delete'
                   SOURCE: 'dist/'
-                  REMOTE_HOST: 8.140.45.252
-                  REMOTE_USER: root
-                  # REMOTE_PASSWORD: ${{ secrets.DEPLOY_PASSWORD }}
-                  TARGET: /www/wwwroot/pan.reaicc.com # 服务器目标路径
+                  REMOTE_HOST: "8.140.45.252"
+                  REMOTE_USER: "root"
+                  TARGET: "/www/wwwroot/pan.reaicc.com" # 服务器目标路径
