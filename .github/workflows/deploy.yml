@@ -39,11 +39,11 @@ jobs:
       - name: 更新服务器
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: ${{ secrets.DEPLOY_SERVER_HOST }} # 服务器ip地址 ;
+          host: ${{ secrets.DEPLOY_SERVER_HOST }} # 服务器ip地址
           username: root # 服务器用户名称；
           password: ${{ secrets.DEPLOY_PASSWORD }} # 服务器密码；
           port: ${{ secrets.DEPLOY_SERVER_PORT }} # 服务器端口，默认22；
           # 要上传文件所在目录
           local_path: './dist/*'
           # 远程服务器目标路径
-          target_path: '/www/wwwroot/www.mallchat.cn'
+          target_path: '/www/wwwroot/pan.reaicc.com/'
