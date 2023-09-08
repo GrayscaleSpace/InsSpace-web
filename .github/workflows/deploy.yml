@@ -27,7 +27,7 @@ jobs:
                   node-version: 16.18.1
                   cache: 'npm'
             #缓存依赖
-            - name: Cache nodemodules
+            - name: 缓存依赖
               uses: actions/cache@v1
               env:
                   cache-name: cache-node-modules
@@ -43,15 +43,15 @@ jobs:
                       ${{ runner.os }}-
 
             # 装依赖
-            - name: Install
+            - name: 安装依赖
               run: npm install
 
             # 打包
-            - name: Build
+            - name: 打包
               run: npm run build
 
             # 上传打包资源
-            - name: Deploy
+            - name: 上传打包资源
               uses: appleboy/ssh-action@master
               env:
                   SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
