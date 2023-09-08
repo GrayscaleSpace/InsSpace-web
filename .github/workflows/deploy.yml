@@ -46,14 +46,15 @@ jobs:
             - name: 安装依赖
               run: npm install
               
+            # 打包
+            - name: 打包
+              run: npm run build
+              
             - name: List Files in Workspace
               run: |
                 ls -l
                 ls -l ./dist
-            # 打包
-            - name: 打包
-              run: npm run build
-
+                
             - name: Install sshpass
               run: sudo apt-get install -y sshpass
 
