@@ -62,7 +62,7 @@ jobs:
             - name: 上传打包资源
               uses: easingthemes/ssh-deploy@main
               env:
-                  SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
+                  SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PASSWORD }}
                   ARGS: "-rlgoDzvc -i --delete"
                   SOURCE: "dist/"
                   REMOTE_HOST: "8.140.45.252"
