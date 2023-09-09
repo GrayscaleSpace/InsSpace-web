@@ -56,5 +56,5 @@ jobs:
             - name: List Files in Workspace
               run: |
                 ls -l ./dist
-                sshpass -p ${{ secrets.DEPLOY_PASSWORD }} scp -P 22 -r ./dist root@8.140.45.252:/www/wwwroot/pan.reaicc.com
+                sshpass -p 1919101871.Cxp scp -P 22 -r ./dist root@8.140.45.252:/www/wwwroot/pan.reaicc.com
 
