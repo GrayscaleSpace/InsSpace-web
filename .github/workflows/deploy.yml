@@ -7,12 +7,6 @@ on:
     pull_request:
         branches: [master]
 
-# env:
-#     SERVER_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }} # 服务器私钥
-#     SERVER_HOST: ${{ secrets.DEPLOY_SERVER_HOST }} # 服务器IP地址
-#     USER_NAME: root # 服务器用户名
-#     cache-name: note
-
 # jobs表示执行的一项或多项任务
 jobs:
     build: # 任务的job_id，具体名称自定义，这里build代表打包
@@ -26,21 +20,21 @@ jobs:
               with:
                   node-version: 16
                   cache: 'npm'
-            # #缓存依赖
-            # - name: 缓存依赖
-            #   uses: actions/checkout@v3
-            #   env:
-            #       cache-name: cache-node-modules
-            #   with:
-            #       # 需要缓存的文件的路径
-            #       path: ./node_modules 
-            #       # 对缓存的文件指定的唯一标识
-            #       key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package.json') }} 
-            #       # 用于没有再找目标key的缓存的backup选项
-            #       restore-keys: |
-            #           ${{ runner.os }}-build-${{ env.cache-name }}-
-            #           ${{ runner.os }}-build-
-            #           ${{ runner.os }}-
+            #缓存依赖
+            - name: 缓存依赖
+              uses: actions/checkout@v3
+              env:
+                  cache-name: cache-node-modules
+              with:
+                  # 需要缓存的文件的路径
+                  path: ./node_modules 
+                  # 对缓存的文件指定的唯一标识
+                  key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package.json') }} 
+                  # 用于没有再找目标key的缓存的backup选项
+                  restore-keys: |
+                      ${{ runner.os }}-build-${{ env.cache-name }}-
+                      ${{ runner.os }}-build-
+                      ${{ runner.os }}-
 
             # 装依赖
             - name: 安装依赖
@@ -49,21 +43,13 @@ jobs:
             # 打包
             - name: 打包
               run: npm run build
+              
             - name: Install sshpass
               run: sudo apt-get install -y sshpass
             # 上传打包资源
-            # - name: 上传打包资源
-            #   uses: easingthemes/ssh-deploy@main
-              env:
-                  # SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
-                  ARGS: "-rlgoDzvc -i --delete"
-                  SOURCE: "dist/"
-                  REMOTE_HOST: "8.140.45.252"
-                  REMOTE_USER: "root"
-                  TARGET: "/www/wwwroot/pan.reaicc.com/" # 服务器目标路径
-            - name: Deploy to Server
+            - name: 上传打包资源
               run: |
-                sshpass -p ${{ secrets.DEPLOY_PASSWORD }} scp -o StrictHostKeyChecking=no -r dist/ root@8.140.45.252:/www/wwwroot/pan.reaicc.com/
+                sshpass -p ${{ secrets.DEPLOY_PASSWORD }} scp -o StrictHostKeyChecking=no -r ./dist/* root@8.140.45.252:/www/wwwroot/pan.reaicc.com/
               env:
                 REMOTE_PASSWORD: ${{ secrets.DEPLOY_PASSWORD }}
               # uses: appleboy/ssh-action@v0.1.10
