@@ -60,7 +60,7 @@ jobs:
 
             # 上传打包资源
             - name: 上传打包资源
-              uses: easingthemes/ssh-deploy@main
+              # uses: easingthemes/ssh-deploy@main
               # env:
               #     SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
               #     ARGS: "-rlgoDzvc -i --delete"
@@ -68,7 +68,7 @@ jobs:
               #     REMOTE_HOST: "8.140.45.252"
               #     REMOTE_USER: "root"
               #     TARGET: "/www/wwwroot/pan.reaicc.com/"
-              # uses: appleboy/ssh-action@v0.1.10
+              uses: appleboy/ssh-action@v0.1.10
               with:
                   host: ${{ secrets.DEPLOY_SERVER_HOST }} # 服务器ip地址 ; 需要去仓库的 settings/secrets/actions 去创建
                   username: root # 服务器用户名称；需要去仓库的 settings/secrets/actions 去创建
