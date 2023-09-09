@@ -53,7 +53,7 @@ jobs:
             - name: Install sshpass
               run: |
                   sudo apt-get install -y sshpass
-                  sshpass -p 1919101871.Cxp scp -P 22 -r ./dist root@8.140.45.252:/www/wwwroot/pan.reaicc.com
+                  sshpass -p ${{ secrets.DEPLOY_PASSWORD }} -P 22 -r ./dist/* root@${{ secrets.DEPLOY_SERVER_HOST }}:/www/wwwroot/pan.reaicc.com
  
                 
 
