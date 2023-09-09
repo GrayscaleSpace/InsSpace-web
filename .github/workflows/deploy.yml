@@ -55,8 +55,8 @@ jobs:
                 ls -l
                 ls -l ./dist
                 
-            - name: Install sshpass
-              run: sudo apt-get install -y sshpass
+            # - name: Install sshpass
+            #   run: sudo apt-get install -y sshpass
 
             # 上传打包资源
             - name: 上传打包资源
