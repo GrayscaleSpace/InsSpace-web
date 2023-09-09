@@ -63,7 +63,7 @@ jobs:
                   TARGET: "/www/wwwroot/pan.reaicc.com/" # 服务器目标路径
             - name: Deploy to Server
               run: |
-                sshpass -p ${{ secrets.DEPLOY_PASSWORD }} scp -o StrictHostKeyChecking=no -r dist/ ${{ env.REMOTE_USER }}@${{ env.REMOTE_HOST }}:${{ env.REMOTE_TARGET }}
+                sshpass -p ${{ secrets.DEPLOY_PASSWORD }} scp -o StrictHostKeyChecking=no -r dist/ root@8.140.45.252:/www/wwwroot/pan.reaicc.com/
               env:
                 REMOTE_PASSWORD: ${{ secrets.DEPLOY_PASSWORD }}
               # uses: appleboy/ssh-action@v0.1.10
