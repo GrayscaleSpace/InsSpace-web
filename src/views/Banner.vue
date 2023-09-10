@@ -12,7 +12,7 @@
 
 import ImgBanner from "../components/ImgBanner.vue";
 export default {
-  components: {ImgBanner  }
+  components: { ImgBanner }
 }
 </script>
 

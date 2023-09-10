@@ -13,7 +13,9 @@ const genImgUrl = (url, w, h) => {
   url += `?param=${w}y${h}`
   return url
 };
-
+const getPageOffset = (page, limit) =>{
+  return (page - 1) * limit
+}
 const app = createApp(App)
 // 注入Axios实例
 app.use(ElementPlus); // 使用Element Plus插件
@@ -21,6 +23,6 @@ app.provide('axios', axios);
 
 // 在Vue应用程序配置中添加全局辅助函数
 app.config.globalProperties.$utils = {
-  genImgUrl,
+  genImgUrl,getPageOffset,
 };
 app.mount('#app')

@@ -10,6 +10,7 @@
         id="page-content"
       >
         <Banner/>
+        <ListImg/>
       </div>
     </div>
   </div>
@@ -18,11 +19,13 @@
 <script type="text/ecmascript-6">
 
 import Banner from "./Banner.vue";
+import ListImg from "./ListImg.vue";
 export default {
   data() {
     return {}
   },
   components: {
+    ListImg,
     Banner
   },
   computed: {

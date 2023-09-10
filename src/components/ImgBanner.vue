@@ -16,9 +16,10 @@ export default {
   data() {
     return {
       banners: [],
+      playlists: [],
     }
   },
-  async beforeMount() {
+  async created() {
     const {banners} = await getBanner();
     this.banners = banners;
     console.log(banners);
