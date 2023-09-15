@@ -1,8 +1,8 @@
 <template>
   <div class="playlist-card" >
     <div class="img-wrap">
-      <img :src="this.$utils.genImgUrl(base64Image, 300)" />
-<!--      <img :src="img" />-->
+<!--      <img :src="this.$utils.genImgUrl(base64Image, 300)" />-->
+      <img :src="base64Image" />
       <div class="desc-wrap" v-if="name">
         <span class="desc">{{ name }}</span>
       </div>
