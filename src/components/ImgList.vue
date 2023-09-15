@@ -1,7 +1,8 @@
 <template>
   <div class="playlist-card" >
     <div class="img-wrap">
-      <img :src="this.$utils.genImgUrl(img, 300)" />
+      <img :src="this.$utils.genImgUrl(base64Image, 300)" />
+<!--      <img :src="img" />-->
       <div class="desc-wrap" v-if="name">
         <span class="desc">{{ name }}</span>
       </div>
@@ -16,7 +17,7 @@ export default {
   name: "ImgList",
   data() {
     return {
-      img: "", // 添加base64Image属性
+      base64Image: "", // 添加base64Image属性
     };
   },
   mounted() {
@@ -24,23 +25,25 @@ export default {
     this.convertImageToBase64();
   },
   methods: {
-    convertImageToBase64() {
+    async convertImageToBase64() {
       // 假设this.img包含图片的URL，你需要将其替换为实际的图片URL
       const imageUrl = this.img;
-
-      // 使用XMLHttpRequest加载图片并转换为Base64
-      const xhr = new XMLHttpRequest();
-      xhr.onload = () => {
+      console.log(imageUrl)
+      try {
+        // 使用Fetch API加载图片并转换为Base64
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
         const reader = new FileReader();
+
         reader.onloadend = () => {
           // 将Base64数据赋值给base64Image
-          this.img = reader.result;
+          this.base64Image = reader.result;
         };
-        reader.readAsDataURL(xhr.response);
-      };
-      xhr.open("GET", imageUrl);
-      xhr.responseType = "blob";
-      xhr.send();
+
+        reader.readAsDataURL(blob);
+      } catch (error) {
+        console.error("转换图片为Base64时出错：", error);
+      }
     },
   },
 };
