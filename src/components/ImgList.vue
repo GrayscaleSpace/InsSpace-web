@@ -11,18 +11,41 @@
 </template>
 
 <script>
-
 export default {
   props: ["id", "img", "name", "desc"],
   name: "ImgList",
   data() {
     return {
-      imgList: [],
-    }
+      img: "", // 添加base64Image属性
+    };
   },
+  mounted() {
+    // 在组件挂载后，将图片转换为Base64
+    this.convertImageToBase64();
+  },
+  methods: {
+    convertImageToBase64() {
+      // 假设this.img包含图片的URL，你需要将其替换为实际的图片URL
+      const imageUrl = this.img;
 
-}
+      // 使用XMLHttpRequest加载图片并转换为Base64
+      const xhr = new XMLHttpRequest();
+      xhr.onload = () => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          // 将Base64数据赋值给base64Image
+          this.img = reader.result;
+        };
+        reader.readAsDataURL(xhr.response);
+      };
+      xhr.open("GET", imageUrl);
+      xhr.responseType = "blob";
+      xhr.send();
+    },
+  },
+};
 </script>
+
 
 <style lang="scss" scoped>
 /* 使用@import导入全局样式文件 */
