@@ -1,10 +1,11 @@
 <template>
   <div class="playlist-card" >
     <div class="img-wrap">
-      <img :src="this.$utils.genImgUrl(img, 300)" />
-<!--      <div class="desc-wrap" v-if="desc">-->
-<!--        <span class="desc">{{ desc }}</span>-->
-<!--      </div>-->
+<!--      <img :src="this.$utils.genImgUrl(img, 300)" />-->
+      <img :src="img" />
+      <div class="desc-wrap" v-if="name">
+        <span class="desc">{{ name }}</span>
+      </div>
     </div>
 <!--    <p class="name">{{ name }}</p>-->
   </div>

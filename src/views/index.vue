@@ -9,7 +9,7 @@
         class="content"
         id="page-content"
       >
-        <Banner/>
+<!--        <Banner/>-->
         <ListImg/>
       </div>
     </div>

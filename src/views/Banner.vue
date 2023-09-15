@@ -1,4 +1,3 @@
-// 发现音乐页面
 <template>
   <div class="discovery router-view-center">
     <div class="discovery-content">

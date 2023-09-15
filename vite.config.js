@@ -9,7 +9,7 @@ export default defineConfig({
     proxy: {
       // 配置代理
       '/api': {
-        target: 'https://qwe-oss.oss-cn-beijing.aliyuncs.com',
+        target: 'http://38.47.101.62:9901',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },

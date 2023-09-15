@@ -13,9 +13,9 @@
         </div>
         <div class="playlist-cards">
           <ImgList
-              :img="item.url"
-              :key="index"
-              :name="item.title"
+              :img="item.thumbnail"
+              :key="item.index"
+              :name="item.name"
               v-for="(item,index) in imglists"
           />
           <!-- 加载动画，根据需要显示或隐藏 -->
@@ -123,7 +123,7 @@ export default {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // 1秒延迟，模拟加载时间
 
         // 发起数据请求
-        const response = await imgUse.get('/img.json', {
+        const response = await imgUse.get('/wall/small', {
           params: {
             limit: PAGE_SIZE,
             offset: this.$utils.getPageOffset(10, PAGE_SIZE),
@@ -131,7 +131,7 @@ export default {
         });
 
         // 处理响应数据
-        const data = response.data;
+        const data = response.data.data;
         this.imglists = data.slice(25, 30);
         // 更新总条数
         this.page.total = this.imglists.length;
@@ -179,13 +179,13 @@ export default {
 
     async loadImgLists() {
       try {
-        const response = await imgUse.get('/img.json', {
+        const response = await imgUse.get('/wall/small', {
           params: {
             limit: PAGE_SIZE,
             offset: this.$utils.getPageOffset(10, PAGE_SIZE),
           },
         });
-        const data = response.data;
+        const data = response.data.data;
         this.imglists = data.slice(
             (this.page.currentPage - 1) * this.page.pageSize,
             this.page.currentPage * this.page.pageSize
