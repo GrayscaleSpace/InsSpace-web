@@ -13,10 +13,11 @@
         </div>
         <div class="playlist-cards">
           <ImgList
+              :id="item.pid"
               :img="item.thumbnail"
-              :key="item.index"
+              :key="item.pid"
               :name="item.name"
-              v-for="(item,index) in imglists"
+              v-for="item in imglists"
           />
           <!-- 加载动画，根据需要显示或隐藏 -->
           <div v-if="isLoading" class="loading">Loading...</div>
