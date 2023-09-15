@@ -40,6 +40,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import {getBanner, getImgList} from "../api"
 import ImgList from "../components/ImgList.vue";
 import axios from "axios";
 
@@ -123,25 +124,20 @@ export default {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // 1秒延迟，模拟加载时间
 
         // 发起数据请求
-        const response = await imgUse.get('/wall/small', {
-          params: {
-            limit: PAGE_SIZE,
-            offset: this.$utils.getPageOffset(10, PAGE_SIZE),
-          },
+        imgUse("/wall/small").then(res=>{
+          // this.imglists = imgList.data
+          // 处理响应数据
+          const data = res.data.data;
+          this.imglists = data.slice(25, 30);
+          // 更新总条数
+          this.page.total = this.imglists.length;
+          // 打印下拉加载的数据
+          console.log('下拉加载的数据：', this.imglists.length+5);
+          console.log('下拉加载的数据：', this.imglists);
+          // 解析 Promise，并传递新数据数组作为解析值
+          return this.imglists;
         });
 
-        // 处理响应数据
-        const data = response.data.data;
-        this.imglists = data.slice(25, 30);
-        // 更新总条数
-        this.page.total = this.imglists.length;
-
-        // 打印下拉加载的数据
-        console.log('下拉加载的数据：', this.imglists.length+5);
-        console.log('下拉加载的数据：', this.imglists);
-
-        // 解析 Promise，并传递新数据数组作为解析值
-        return this.imglists;
       } catch (error) {
         console.error('加载数据失败', error);
         throw error; // 抛出错误以便调用方处理
@@ -179,18 +175,15 @@ export default {
 
     async loadImgLists() {
       try {
-        const response = await imgUse.get('/wall/small', {
-          params: {
-            limit: PAGE_SIZE,
-            offset: this.$utils.getPageOffset(10, PAGE_SIZE),
-          },
+        imgUse("/wall/small").then(res=>{
+          const data =res.data.data;
+          console.log(data)
+          this.imglists = data.slice(
+              (this.page.currentPage - 1) * this.page.pageSize,
+              this.page.currentPage * this.page.pageSize
+          );
+          this.page.total = data.length;
         });
-        const data = response.data.data;
-        this.imglists = data.slice(
-            (this.page.currentPage - 1) * this.page.pageSize,
-            this.page.currentPage * this.page.pageSize
-        );
-        this.page.total = data.length;
       } catch (error) {
         console.error('加载图片列表失败', error);
       }

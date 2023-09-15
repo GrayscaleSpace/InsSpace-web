@@ -1,7 +1,7 @@
 // axios.js
 import axios from 'axios';
 
-const BASE_URL = 'https://netease-music-api.fe-mm.com/'
+const BASE_URL = 'http://38.47.101.62:9901'
 
 // 创建一个Axios实例
 const axiosInstance = axios.create({
