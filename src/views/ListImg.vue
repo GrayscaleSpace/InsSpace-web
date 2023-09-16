@@ -1,211 +1,125 @@
 <template>
   <!-- 下拉刷新区域 -->
-  <div ref="refresh" class="refresh" @scroll="handleScroll">
-    <div class="refresh-content">
-      <div
-          class="playlists"
-          ref="playlists"
-      >
-        <div
-            class="top-play-list-card"
-            v-if="topPlaylist.id"
-        >
-        </div>
-        <div class="playlist-cards">
-          <ImgList
-              :id="item.pid"
-              :img="item.thumbnail"
-              :key="item.pid"
-              :name="item.name"
-              v-for="item in imglists"
-          />
-          <!-- 加载动画，根据需要显示或隐藏 -->
-          <div v-if="isLoading" class="loading">Loading...</div>
-        </div>
+  <div class="el-img" v-infinite-scroll="loadData" :infinite-scroll-disabled="disabled">
+    <div class="playlists" ref="scrollContainer">
+      <!-- 顶部播放列表卡片，根据条件是否渲染 -->
+      <div class="top-play-list-card" v-if="topPlaylist.id"></div>
+      <div class="playlist-cards">
+        <!-- 使用ImgList组件渲染图片列表 -->
+        <ImgList
+            :id="item.pid"
+            :img="item.thumbnail"
+            :key="item.pid"
+            :name="item.name"
+            v-for="item in imglists"
+            :datasrc="item.thumbnail"
+        />
       </div>
+      <!-- 加载中提示 -->
+      <p v-if="loading">加载中...</p>
+      <!-- 没有更多数据提示 -->
+      <p v-if="noMore">没有更多了</p>
     </div>
-    <!-- 分页器 -->
-    <!--    <el-pagination-->
-    <!--        background-->
-    <!--        @size-change="handleSizeChange"-->
-    <!--        @current-change="handleCurrentChange"-->
-    <!--        :current-page="page.currentPage"-->
-    <!--        :page-sizes="[5, 10, 20, 50]"-->
-    <!--        :page-size="page.pageSize"-->
-    <!--        layout="total, sizes, prev, pager, next"-->
-    <!--    :total="page.total"-->
-    <!--        :total-text="`${page.total} 条记录`"-->
-    <!--    >-->
-    <!--    </el-pagination>-->
   </div>
 </template>
 
-<script type="text/ecmascript-6">
-import {getBanner, getImgList} from "../api"
+<script setup>
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import ImgList from "../components/ImgList.vue";
-import axios from "axios";
+import axios from 'axios';
 
 const imgUse = axios.create({
-  baseURL: '/api', // 使用代理路径
+  baseURL: '/api',
 });
-const PAGE_SIZE = 50;
 
-export default {
-  components: {ImgList},
+const PAGE_SIZE = 15; // 每页加载的图片数量
+const MAX_PAGES = 2; // 最多加载的页数
 
-  data() {
-    return {
-      imglists: [],
-      isLoading: false,
-      refreshThreshold: 60,
-      startY: 0,
-      page: {
-        pageSize: 25,
-        currentPage: 1,
-        total: 0
+const count = ref(1); // 用于计数已加载页数的变量，初始为1
+const loading = ref(false); // 用于控制加载状态的变量
+const imglists = ref([]); // 用于存储图片列表的变量
+const page = ref({
+  pageSize: PAGE_SIZE,
+  currentPage: 1,
+  total: 0,
+});
+const topPlaylist = ref({}); // 顶部播放列表
+
+const noMore = computed(() => {
+  return count.value >= MAX_PAGES; // 如果加载页数已达到最大页数，则表示没有更多数据
+});
+
+const disabled = computed(() => {
+  return loading.value || noMore.value;
+});
+
+// 从服务器获取图片数据的异步函数，传入页面号作为参数
+const fetchImg = async (pageNumber) => {
+  loading.value = true;
+  try {
+    const res = await imgUse('/wall/small', {
+      params: {
+        page: pageNumber,
+        pageSize: PAGE_SIZE,
       },
-      activeTabIndex: 0,
-      currentPage: 0,
-      total: 0,
-      topPlaylist: {}
-    };
-  },
-
-  created() {
-    this.PAGE_SIZE = PAGE_SIZE;
-  },
-  mounted() {
-    // 在组件进入时加载数据
-    this.loadInitialData();
-  },
-  methods: {
-    // /*分页*/
-    // handleSizeChange(val) {
-    //   console.log(`每页 ${val} 条`);
-    //   this.page.pageSize = val;
-    //   this.getImgList();
-    // },
-    // handleCurrentChange(val) {
-    //   //console.log(`当前页: ${val}`);
-    //   this.page.currentPage = val;
-    //   this.getImgList();
-    // },
-    // // 模拟异步加载新数据的函数
-    // async fetchData() {
-    //   return new Promise((resolve) => {
-    //     // 模拟异步操作，延迟1秒钟
-    //     setTimeout(() => {
-    //       // 生成一组新数据，每个数据项表示一个新的项目
-    //       const newData = Array.from({ length: this.pageSize }, (_, index) => {
-    //         const response = imgUse.get('/img.json', {
-    //           params: {
-    //             limit: PAGE_SIZE,
-    //             offset: this.$utils.getPageOffset(10, PAGE_SIZE),
-    //           },
-    //         });
-    //         const data = response.data;
-    //         this.imglists = data.slice(
-    //             (this.page.currentPage - 1) * this.imglists.length,
-    //             this.page.currentPage * this.imglists.length
-    //         );
-    //         this.page.total = data.length;
-    //
-    //       });
-    //       // 解析 Promise，并传递新数据数组作为解析值
-    //       // 打印下拉加载的数据
-    //       console.log('下拉加载的数据：', this.imglists.length );
-    //       resolve(newData);
-    //     }, 1000); // 1秒延迟，模拟加载时间
-    //   });
-    // },
-    // 模拟异步加载新数据的函数
-    async fetchData() {
-      try {
-        // 模拟异步操作，延迟1秒钟
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // 1秒延迟，模拟加载时间
-
-        // 发起数据请求
-        imgUse("/wall/small").then(res=>{
-          // this.imglists = imgList.data
-          // 处理响应数据
-          const data = res.data.data;
-          this.imglists = data.slice(25, 30);
-          // 更新总条数
-          this.page.total = this.imglists.length;
-          // 打印下拉加载的数据
-          console.log('下拉加载的数据：', this.imglists.length+5);
-          console.log('下拉加载的数据：', this.imglists);
-          // 解析 Promise，并传递新数据数组作为解析值
-          return this.imglists;
-        });
-
-      } catch (error) {
-        console.error('加载数据失败', error);
-        throw error; // 抛出错误以便调用方处理
-      }
-    },
-
-
-    async loadMoreData() {
-      if (this.isLoading) return;
-      this.isLoading = true;
-
-      // 模拟异步加载更多数据的过程
-      setTimeout(async () => {
-        // 请求新数据
-        const newData = await this.fetchData();
-        this.imglists = this.imglists.concat(newData); // 将新数据追加到列表
-        this.isLoading = false;
-      }, 1000); // 模拟加载时间
-
-      // 重置下拉刷新状态
-      this.startY = 0;
-      this.$refs.refresh.scrollTop = 0;
-    },
-    loadInitialData() {
-      // 在组件进入时加载初始数据
-      this.fetchData()
-          .then(() => {
-            // 数据加载完成后，可以执行其他操作
-            this.loadImgLists(); // 调用新的方法来加载图片列表
-          })
-          .catch((error) => {
-            console.error('加载数据失败', error);
-          });
-    },
-
-    async loadImgLists() {
-      try {
-        imgUse("/wall/small").then(res=>{
-          const data =res.data.data;
-          console.log(data)
-          this.imglists = data.slice(
-              (this.page.currentPage - 1) * this.page.pageSize,
-              this.page.currentPage * this.page.pageSize
-          );
-          this.page.total = data.length;
-        });
-      } catch (error) {
-        console.error('加载图片列表失败', error);
-      }
-    },
-
-    // 滚动事件处理函数
-    handleScroll(event) {
-      // 获取触发滚动事件的目标元素，即包含下拉刷新内容的容器
-      const target = event.target;
-      // 判断用户是否下拉到了超过阈值的距离
-      if (target.scrollTop - this.startY >= this.refreshThreshold) {
-        // 更新上一次记录的滚动位置为当前的滚动位置
-        this.startY = target.scrollTop;
-        // 打印下拉的距离，用于调试和监测
-        console.log('超过阈值的距离：',this.refreshThreshold);
-        // 触发加载更多数据的操作
-        this.loadMoreData();
-      }
-    },
-  },
+    });
+    const data = res.data.data;
+    imglists.value = [...imglists.value, ...data];
+    console.log('总数据：', data.length);
+    page.value.currentPage++;
+  } catch (error) {
+    console.error('获取图片数据失败：', error);
+  } finally {
+    loading.value = false;
+  }
 };
+
+// 获取图片的异步函数
+const getImg = async () => {
+  if (loading.value || noMore.value) {
+    return;
+  }
+  await fetchImg(page.value.currentPage + 1); // 加载下一页的数据
+  count.value++;
+};
+
+// 加载更多的处理函数
+const loadData = () => {
+  if (loading.value || noMore.value) {
+    return;
+  }
+  setTimeout(() => {
+    getImg(); // 获取图片数据
+  }, 1000);
+};
+
+// 使用 Intersection Observer 来监听滚动容器
+const scrollContainer = ref(null);
+
+const intersectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    console.log('entry:', entry.isIntersecting); // 检查scrollContainer的值是否为正确的DOM元素
+    if (entry.isIntersecting && !noMore.value) {
+      loadData(); // 滚动到容器底部时触发加载更多数据
+    }
+  });
+});
+
+onMounted(() => {
+  // 初始化时加载第一页的数据
+  loadData();
+
+  // 将Intersection Observer绑定到滚动容器
+  if (scrollContainer.value) {
+    console.log('scrollContainer:', scrollContainer.value); // 检查scrollContainer的值是否为正确的DOM元素
+    intersectionObserver.observe(scrollContainer.value);
+  }
+});
+
+onUnmounted(() => {
+  // 在组件销毁时断开Intersection Observer
+  intersectionObserver.disconnect();
+});
 </script>
 
 <style lang="scss" scoped>

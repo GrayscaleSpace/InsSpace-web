@@ -1,8 +1,8 @@
 <template>
   <div class="playlist-card" >
     <div class="img-wrap">
-<!--      <img :src="this.$utils.genImgUrl(base64Image, 300)" />-->
-      <img :src="base64Image" />
+      <img :src="this.$utils.genImgUrl(img, 300)" :data-src = "datasrc"/>
+<!--      <img :src="base64Image" />-->
       <div class="desc-wrap" v-if="name">
         <span class="desc">{{ name }}</span>
       </div>
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  props: ["id", "img", "name", "desc"],
+  props: ["id", "img", "name", "desc","datasrc"],
   name: "ImgList",
   data() {
     return {
@@ -22,13 +22,12 @@ export default {
   },
   mounted() {
     // 在组件挂载后，将图片转换为Base64
-    this.convertImageToBase64();
+    // this.convertImageToBase64();
   },
   methods: {
     async convertImageToBase64() {
       // 假设this.img包含图片的URL，你需要将其替换为实际的图片URL
       const imageUrl = this.img;
-      console.log(imageUrl)
       try {
         // 使用Fetch API加载图片并转换为Base64
         const response = await fetch(imageUrl);
