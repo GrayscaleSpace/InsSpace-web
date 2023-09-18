@@ -3,7 +3,7 @@
   <div class="el-img" >
     <div class="playlists" >
       <!-- 顶部播放列表卡片，根据条件是否渲染 -->
-      <div class="top-play-list-card" v-if="topPlaylist.id"></div>
+<!--      <div class="top-play-list-card" v-if="topPlaylist.id"></div>-->
       <div class="playlist-cards" v-infinite-scroll="loadData"  :infinite-scroll-disabled="disabled">
         <!-- 使用ImgList组件渲染图片列表 -->
         <ImgList
