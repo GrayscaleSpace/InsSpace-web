@@ -1,57 +1,58 @@
 <template>
-  <div class="playlist-card" >
+  <div class="playlist-card">
+    <SkeletonLoader :loading="loading" /> <!-- 使用 SkeletonLoader 组件 -->
     <div class="img-wrap">
-      <img :src="this.$utils.genImgUrl(img, 300)" :data-src = "datasrc"/>
-<!--      <img :src="base64Image" />-->
-      <div class="desc-wrap" v-if="name">
+      <img
+          :data-src="datasrc"
+          :src="this.$utils.genImgUrl(img, 300)"
+          @load="onImageLoad"
+          @error="onImageError"
+       alt=""/>
+
+<!--      <p v-if="imgFailed">加载失败，请重试</p>-->
+      <div class="desc-wrap" v-if="name && imgLoaded">
         <span class="desc">{{ name }}</span>
       </div>
     </div>
-<!--    <p class="name">{{ name }}</p>-->
   </div>
+
 </template>
+
 
 <script>
 export default {
-  props: ["id", "img", "name", "desc","datasrc"],
+  props: ["id", "img", "name", "desc", "datasrc", "load"],
   name: "ImgList",
-  data() {
-    return {
-      base64Image: "", // 添加base64Image属性
-    };
-  },
-  mounted() {
-    // 在组件挂载后，将图片转换为Base64
-    // this.convertImageToBase64();
-  },
-  methods: {
-    async convertImageToBase64() {
-      // 假设this.img包含图片的URL，你需要将其替换为实际的图片URL
-      const imageUrl = this.img;
-      try {
-        // 使用Fetch API加载图片并转换为Base64
-        const response = await fetch(imageUrl);
-        const blob = await response.blob();
-        const reader = new FileReader();
-
-        reader.onloadend = () => {
-          // 将Base64数据赋值给base64Image
-          this.base64Image = reader.result;
-        };
-
-        reader.readAsDataURL(blob);
-      } catch (error) {
-        console.error("转换图片为Base64时出错：", error);
-      }
-    },
-  },
 };
 </script>
+<script setup>
 
+import { ref } from "vue";
+import SkeletonLoader from "./SkeletonLoader.vue";
+
+const imgLoaded = ref(false); // 控制图片是否加载完成
+const imgFailed = ref(false); // 控制图片是否加载失败
+const loading = ref(true); // 控制骨架屏的显示
+const currentDate = new Date().toDateString();
+
+
+// 图片加载完成时的回调
+const onImageLoad = () => {
+  imgLoaded.value = true;
+  loading.value = false;
+};
+
+// 图片加载失败时的回调
+const onImageError = () => {
+  imgFailed.value = true;
+  loading.value = false;
+};
+</script>
 
 <style lang="scss" scoped>
 /* 使用@import导入全局样式文件 */
 @import '../style/variables.scss';
+
 .playlist-card {
   position: relative;
   width: calc(20% - 8px);
@@ -116,6 +117,41 @@ export default {
 
   .name {
     font-size: $font-size-sm;
+  }
+}
+/* 在屏幕宽度小于768px时应用的样式 */
+@media (max-width: 767px) {
+  .playlist-card {
+    position: relative;
+    width: calc(100% - 8px);
+    margin: 4px;
+    margin-bottom: 0px;
+    cursor: pointer;
+  }
+  /* 修改全局字体大小 */
+  body {
+    font-size: 14px;
+  }
+
+  /* 调整导航栏样式 */
+  .header {
+    background-color: #333;
+    padding: 10px;
+    text-align: center;
+  }
+
+  /* 修改全局链接颜色 */
+  a {
+    color: #ff6600;
+  }
+
+  /* 调整 .playlist-card 样式 */
+  .playlist-card {
+    width: 100%; /* 宽度占满屏幕 */
+    margin: 0; /* 取消边距 */
+    padding: 16px; /* 添加内边距 */
+    background-color: #fff; /* 背景颜色 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
   }
 }
 </style>

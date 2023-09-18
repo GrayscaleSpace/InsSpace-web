@@ -2,15 +2,31 @@
   <div class="layout">
     <div class="layout-body">
       <div
-        class="layout-menu"
+          class="layout-menu"
       >
       </div>
       <div
-        class="content"
-        id="page-content"
+          class="content"
+          id="page-content"
       >
-<!--        <Banner/>-->
+        <!--        <Banner/>-->
         <ListImg/>
+        <el-backtop :bottom="100">
+          <div
+              style="
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+        background-color: var(--el-bg-color-overlay);
+        box-shadow: var(--el-box-shadow-lighter);
+        text-align: center;
+        line-height: 40px;
+        color: #1989fa;
+      "
+          >
+            👆
+          </div>
+        </el-backtop>
       </div>
     </div>
   </div>
@@ -20,6 +36,7 @@
 
 import Banner from "./Banner.vue";
 import ListImg from "./ListImg.vue";
+
 export default {
   data() {
     return {}
@@ -28,15 +45,14 @@ export default {
     ListImg,
     Banner
   },
-  computed: {
-
-  }
+  computed: {}
 }
 </script>
 
 <style lang="scss" scoped>
 /* 使用@import导入全局样式文件 */
 @import '../style/variables.scss';
+
 .layout {
   height: 100%;
 
@@ -52,7 +68,7 @@ export default {
     .content {
       flex: 1;
       overflow-y: auto;
-      min-width: $layout-content-min-width;
+      //min-width: $layout-content-min-width;
       margin-bottom: $mini-player-height;
 
       .router-view-center {

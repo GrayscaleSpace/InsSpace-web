@@ -1,5 +1,5 @@
 // import './assets/main.css'
-
+import * as React from "react";
 import { createApp } from 'vue'
 import App from './App.vue'
 import axios from './utils/axios.js';
@@ -25,4 +25,5 @@ app.provide('axios', axios);
 app.config.globalProperties.$utils = {
   genImgUrl,getPageOffset,
 };
+
 app.mount('#app')

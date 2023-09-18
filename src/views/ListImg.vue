@@ -1,10 +1,10 @@
 <template>
   <!-- 下拉刷新区域 -->
-  <div class="el-img" v-infinite-scroll="loadData" :infinite-scroll-disabled="disabled">
-    <div class="playlists" ref="scrollContainer">
+  <div class="el-img" >
+    <div class="playlists" >
       <!-- 顶部播放列表卡片，根据条件是否渲染 -->
       <div class="top-play-list-card" v-if="topPlaylist.id"></div>
-      <div class="playlist-cards">
+      <div class="playlist-cards" v-infinite-scroll="loadData"  :infinite-scroll-disabled="disabled">
         <!-- 使用ImgList组件渲染图片列表 -->
         <ImgList
             :id="item.pid"
@@ -15,16 +15,17 @@
             :datasrc="item.thumbnail"
         />
       </div>
+
       <!-- 加载中提示 -->
-      <p v-if="loading">加载中...</p>
+      <p v-if="imgLoading">加载中...</p>
       <!-- 没有更多数据提示 -->
       <p v-if="noMore">没有更多了</p>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+<script lang="ts" setup>
+import {computed, onMounted, onUnmounted, ref} from 'vue';
 import ImgList from "../components/ImgList.vue";
 import axios from 'axios';
 
@@ -32,95 +33,55 @@ const imgUse = axios.create({
   baseURL: '/api',
 });
 
-const PAGE_SIZE = 15; // 每页加载的图片数量
-const MAX_PAGES = 2; // 最多加载的页数
 
-const count = ref(1); // 用于计数已加载页数的变量，初始为1
-const loading = ref(false); // 用于控制加载状态的变量
+const PAGE_SIZE = 15;
+// 使用响应式变量来存储数据和状态
+const count = ref(0); // 用于计数已加载页数的变量，初始为1
+const imgLoading = ref(false); // 用于控制加载状态的变量
 const imglists = ref([]); // 用于存储图片列表的变量
-const page = ref({
-  pageSize: PAGE_SIZE,
-  currentPage: 1,
-  total: 0,
-});
 const topPlaylist = ref({}); // 顶部播放列表
 
-const noMore = computed(() => {
-  return count.value >= MAX_PAGES; // 如果加载页数已达到最大页数，则表示没有更多数据
-});
-
-const disabled = computed(() => {
-  return loading.value || noMore.value;
-});
+// 计算是否没有更多数据
+const noMore = computed(() => count.value >= 10)
+const disabled = computed(() => imgLoading.value || noMore.value)
 
 // 从服务器获取图片数据的异步函数，传入页面号作为参数
-const fetchImg = async (pageNumber) => {
-  loading.value = true;
-  try {
-    const res = await imgUse('/wall/small', {
+// 加载更多的处理函数
+const loadData = () => {
+  console.log("Loading data..."); // 添加这一行
+  imgLoading.value = true;
+  setTimeout(async () => {
+    const res = await imgUse('/wall/smallPage', {
       params: {
-        page: pageNumber,
+        pageNum: count.value += 1,
         pageSize: PAGE_SIZE,
       },
     });
-    const data = res.data.data;
+    console.log("Response:", res.data); // 添加这一行
+    const data = res.data.records;
     imglists.value = [...imglists.value, ...data];
-    console.log('总数据：', data.length);
-    page.value.currentPage++;
-  } catch (error) {
-    console.error('获取图片数据失败：', error);
-  } finally {
-    loading.value = false;
-  }
+    imgLoading.value = false;
+  }, 2000);
 };
-
-// 获取图片的异步函数
-const getImg = async () => {
-  if (loading.value || noMore.value) {
-    return;
-  }
-  await fetchImg(page.value.currentPage + 1); // 加载下一页的数据
-  count.value++;
-};
-
-// 加载更多的处理函数
-const loadData = () => {
-  if (loading.value || noMore.value) {
-    return;
-  }
-  setTimeout(() => {
-    getImg(); // 获取图片数据
-  }, 1000);
-};
-
-// 使用 Intersection Observer 来监听滚动容器
-const scrollContainer = ref(null);
-
-const intersectionObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    console.log('entry:', entry.isIntersecting); // 检查scrollContainer的值是否为正确的DOM元素
-    if (entry.isIntersecting && !noMore.value) {
-      loadData(); // 滚动到容器底部时触发加载更多数据
-    }
-  });
-});
-
-onMounted(() => {
-  // 初始化时加载第一页的数据
-  loadData();
-
-  // 将Intersection Observer绑定到滚动容器
-  if (scrollContainer.value) {
-    console.log('scrollContainer:', scrollContainer.value); // 检查scrollContainer的值是否为正确的DOM元素
-    intersectionObserver.observe(scrollContainer.value);
-  }
-});
-
-onUnmounted(() => {
-  // 在组件销毁时断开Intersection Observer
-  intersectionObserver.disconnect();
-});
+// 定义一个方法来检查滚动位置
+// const checkScroll = () => {
+//   const container = document.querySelector(".playlist-cards");
+//   console.log(container)
+//   if (container) {
+//     // 获取容器的滚动位置
+//     const scrollLeft = container.scrollLeft;
+//     const containerWidth = container.clientWidth;
+//     const scrollWidth = container.scrollWidth;
+//
+//     // 如果滚动到右侧底部
+//     if (scrollLeft + containerWidth >= scrollWidth) {
+//       // 调用加载数据的方法
+//       loadData();
+//     }
+//   }
+// };
 </script>
+
 
 <style lang="scss" scoped>
 .playlists {
@@ -136,7 +97,9 @@ onUnmounted(() => {
   .playlist-cards {
     display: flex;
     flex-wrap: wrap;
-    width: 68%;
+    width: 80%;
+    height: 720px;
+    overflow-x: auto; /* 启用水平滚动 */
   }
 
   .pagination {
