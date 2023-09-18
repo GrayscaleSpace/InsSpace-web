@@ -10,8 +10,8 @@ export default {
   server: {
     proxy: {
       '/api': {
-        // target: 'http://38.47.101.62:9901',
-        target: 'http://127.0.0.1:9901',
+        target: 'http://38.47.101.62:9901',
+        // target: 'http://127.0.0.1:9901',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
