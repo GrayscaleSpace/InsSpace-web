@@ -7,12 +7,12 @@
       <div class="playlist-cards" v-infinite-scroll="loadData"  :infinite-scroll-disabled="disabled">
         <!-- 使用ImgList组件渲染图片列表 -->
         <ImgList
-            :id="item.pid"
-            :img="item.thumbnail"
-            :key="item.pid"
+            :id="item.zid"
+            :img="item.url"
+            :key="item.zid"
             :name="item.name"
             v-for="item in imglists"
-            :datasrc="item.thumbnail"
+            :datasrc="item.url"
         />
       </div>
 
@@ -51,7 +51,7 @@ const loadData = () => {
   console.log("Loading data..."); // 添加这一行
   imgLoading.value = true;
   setTimeout(async () => {
-    const res = await imgUse('/wall/smallPage', {
+    const res = await imgUse('/small/page', {
       params: {
         pageNum: count.value += 1,
         pageSize: PAGE_SIZE,
