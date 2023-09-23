@@ -147,9 +147,9 @@ watch(() => props.detail, (val) => {
 .album-tags-dialog {
   .album-dialog-tags {
     margin-top: 15px;
-    + & {
-      margin-top: 25px;
-    }
+    //+ & {
+    //  margin-top: 25px;
+    //}
     &.template-tags {
       .el-tag {
         cursor: pointer;

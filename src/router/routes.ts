@@ -11,15 +11,21 @@ export const constRoutes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Gallery',
-    component: () => import('@/views/gallery/index.vue'),
-    meta: { title: '壁纸', icon: 'PictureFilled', role: [1, 2, 10], keepAlive: true }
+    component: () => import('@/views/template/albumView2.vue'),
+    meta: { title: '壁纸' }
   },
   {
-    path: '/albums/images',
-    name: 'AlbumsImages',
-    component: () => import('@/views/album/Images.vue'),
+    path: '/template/img-show',
+    name: 'ImgShow',
+    component: () => import('@/views/template/img-show.vue'),
     meta: { title: '我的壁纸', icon: 'Reading', role: [1, 2, 10], hidden: true, active: '/', keepAlive: true }
   },
+  // {
+  //   path: '/albums/images',
+  //   name: 'AlbumsImages',
+  //   component: () => import('@/views/album/Images.vue'),
+  //   meta: { title: '我的壁纸', icon: 'Reading', role: [1, 2, 10], hidden: true, active: '/', keepAlive: true }
+  // },
 
 ]
 

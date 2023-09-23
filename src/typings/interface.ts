@@ -115,6 +115,7 @@ export interface BucketSourceHistoryInter {
 export interface ImageInter {
   // 图片id
   id?: string
+  zid?: string
   // 图片名称
   img_name?: string
   // 图片宽度
@@ -157,6 +158,7 @@ export interface ImageInter {
   tags?: string[]
   // 原始名称
   img_origin_name?: string
+  only?: string
   // 顺序
   order?: number
   url?: number
@@ -469,6 +471,7 @@ export interface AlbumInter {
   createdAt?: string // 创建时间
   updatedAt?: string // 更新时间
   zid?: string // 更新时间
+  createTime?: string // 更新时间
   // tops?: Array<string> // 置顶的元素项
 }
 

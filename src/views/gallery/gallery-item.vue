@@ -39,6 +39,7 @@ import {ImageInter} from '@/typings/interface';
 import {computed, Ref, ref, watch} from 'vue';
 import {useCopyText, useCtxInstance} from '@/hooks/global';
 import VLazyImage from 'v-lazy-image';
+import {useRouter} from "vue-router";
 
 interface Props {
   data: ImageInter
@@ -89,7 +90,7 @@ const defaultBtns: BtnProps[] = [
   // { icon: 'Close', type: 'success', title: '移除图片', action: 'remove' } : 
   // { icon: 'Select', type: 'success', title: '选择图片', action: 'select' },
   // { icon: 'Crop', type: 'warning', title: '裁剪图片', action: 'crop', disabled: true },
-  // { icon: 'InfoFilled', type: 'info', title: '图片详情', action: 'detail' },
+  { icon: 'InfoFilled', type: 'info', title: '图片详情', action: 'detail' },
   // { icon: 'Delete', type: 'danger', title: '删除图片', action: 'delete' }
   {icon: 'Download', type: 'success', title: '下载图片', action: 'down'}
 ]
@@ -131,7 +132,7 @@ watch(() => props.data, () => {
   immediate: true
 })
 
-
+const router = useRouter()
 /**
  * 回调函数：按钮点击行为
  */
@@ -162,7 +163,13 @@ const actions = {
   },
   // 详情
   detail() {
-    emit('submit', {type: 'detail', data: myData.value})
+    // emit('submit', {type: 'detail', data: myData.value})
+    router.push({
+      path: '/albums/images',
+      query: {
+        id: myData.value.only
+      }
+    })
   },
   /**
    * 先删除文件，后删除数据

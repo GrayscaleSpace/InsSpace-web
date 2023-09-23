@@ -1,16 +1,15 @@
 <template>
   <div class="album-images">
-    <div class="album-image-header" :style="{
-      'background-image': `url('${detail.background ? detail.background_preview : '/default.jpg'}')`
-    }">
+    <div class="album-image-header">
       <div class="album-actions">
         <el-button type="primary" icon="Back" @click="() => $router.back()">返回</el-button>
-        <el-button type="success" icon="UploadFilled" @click="goUpload">去上传</el-button>
       </div>
       <div class="album-actions-footer">
         <el-button v-if="showActionBar" type="primary" icon="DocumentCopy" size="small" @click="handleAction('copy')">复制链接</el-button>
-        <el-button v-if="showActionBar" type="primary" icon="Close" size="small" @click="handleAction('remove')">移出壁纸</el-button>
-        <el-button v-if="showActionBar" type="danger" icon="Delete" size="small" @click="handleAction('delete')">删除所选</el-button>
+      </div>
+      <div class="images">
+        <img :src="detail.data.url" alt="">
+
       </div>
       <div class="album-title">{{ detail.name }}</div>
       <div class="album-desc">{{ detail.desc }}</div>
@@ -26,76 +25,33 @@
             更新于 {{ detail.updatedAt }}
           </span>
         </div>
-        <div class="album-meta-line">
-          <span>
-            <el-icon><Picture /></el-icon>
-            图片数量: {{list.total }}张
-          </span>
-        </div>
+<!--        <div class="album-meta-line">-->
+<!--          <span>-->
+<!--            <el-icon><Picture /></el-icon>-->
+<!--            图片数量: {{list.total }}张-->
+<!--          </span>-->
+<!--        </div>-->
       </div>
     </div>
-    <div class="album-image-content">
-      <div class="album-image-filter">
-        <div class="filter-input">
-          <el-input v-model="list.filters.img_name" size="large" placeholder="请输入搜索内容..." clearable @keyup.enter="listGet" @clear="listGet">
-            <template #append>
-              <el-button type="primary" @click="() => { list.page = 1;listGet(); }">
-                <el-icon><Search/></el-icon>&nbsp;搜索
-              </el-button>
-            </template>
-          </el-input>
-        </div>
-        <div class="filter-tags" v-if="tags.length >= 2">
-          <span>标签搜索:</span>
-          <span
-            v-for="(tag, index) in tags"
-            :key="'filter-tag-' + index"
-            :class="['filter-tag-item', tag === list.filters.tag ? 'active' : '']"
-            @click="changeTag(tag)">{{ tag }}</span>
-        </div>
-      </div>
-      <div class="album-image-list" v-loading="list.loading">
-        <el-row v-if="list.data.length">
-          <template v-for="(item, index) in list.data" :key="'gallery-item' + index">
-            <el-col :xl="4" :lg="6" :md="8" :sm="12" :xs="24">
-              <gallery-item
-                :data="item"
-                :remove="true"
-                :images="list.data.map(item => item.url)"
-                @reload="listGet"
-                :key="list.page + '-' + index"
-                @submit="handleItemSubmit"
-                @view="handleClick(index)">
-                <template #tags>
-                  <div class="album-tags">
-                    <el-tag
-                      size="small"
-                      v-for="(tag, tIndex) in item.tags"
-                      :key="'tag-' + tIndex"
-                      :type="getTagType(tag)">
-                      {{ tag }}
-                    </el-tag>
-                    <el-tag class="tags-edit" size="small" effect="dark" type="primary" @click.stop="editItemTag(item)">
-                      <el-icon><Edit /></el-icon>
-                    </el-tag>
-                  </div>
-                </template>
-              </gallery-item>
-            </el-col>
-          </template>
-        </el-row>
-        <div class="empty-data" v-else>
-          <el-empty description="暂无数据"></el-empty>
-        </div>
-      </div>
-      <pagination
-        :key="list.page"
-        v-model:page="list.page"
-        v-model:size="list.size"
-        :total="list.total"
-        :page-sizes="[18, 36, 72, 100]"
-        @change="listGet"/>
-    </div>
+<!--    <div class="album-image-content">-->
+<!--      <div class="album-image-filter">-->
+<!--        <div class="filter-input">-->
+
+<!--        </div>-->
+<!--        <div class="filter-tags" v-if="tags.length >= 2">-->
+<!--          <span>标签搜索:</span>-->
+<!--          <span-->
+<!--            v-for="(tag, index) in tags"-->
+<!--            :key="'filter-tag-' + index"-->
+<!--            :class="['filter-tag-item', tag === list.filters.tag ? 'active' : '']"-->
+<!--            @click="changeTag(tag)">{{ tag }}</span>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="album-image-list" v-loading="list.loading">-->
+
+<!--      </div>-->
+
+<!--    </div>-->
     <!-- 图片弹窗 -->
     <detail-dialog
       v-if="item.detail"
@@ -175,57 +131,6 @@ const tops = ref(0)
 // 所有标签
 const tags = ref(['全部'])
 
-/**
- * 数据获取
- */
-// 获取存储桶列表
-const getBuckets = () => {
-  bucket.find({
-    ...list.filters
-  }).then((res: PageResponse<BucketInter>) => {
-    // 这个影响了分页的初始状态，切记切记切记......(排查了很久才发现是这里导致的问题)
-    // list.total = res.total
-    buckets.value = [
-      { id: '', name: '全部' },
-      ...res.items.map(item => {
-        const obj = JSON.parse(item.config)
-        // const { baseUrl } = obj
-        // 第一版本
-        // const tmp = baseUrl && baseUrl.replace(/\$\{/g, '${obj.')
-        // obj.baseUrl = eval('`' + tmp + '`')
-        // obj.baseUrl = baseUrl && baseUrl.replace(/\$\{(.*?)\}/g, (v, key) => {
-        //   return obj[key]
-        // })
-        
-        // 第二版本
-        // obj.baseUrl = baseUrl && baseUrl.replace(/\$\{((config).*?)\}/g, (v, key) => {
-        //   const keys = key.split('.')
-        //   if (keys[0] === 'config') {
-        //     return obj[keys[1]]
-        //   }
-        // })
-
-        // 第三版本
-        for (let key in obj) {
-          obj[key] = obj[key].replace(/\$\{((config).*?)\}/g, (v, key) => {
-            const keys = key.split('.')
-            if (keys[0] === 'config') {
-              return obj[keys[1]]
-            }
-          })
-        }
-        return {
-          id: item.id,
-          name: item.name,
-          type: item.type,
-          tag: item.tag,
-          config_baseUrl: obj.baseUrl
-        }
-      })
-    ]
-    listGet()
-  })
-}
 // 获取标签列表
 const getTags = (callback: Function = () => {}) => {
   album.tags(route.query.id as string).then((res: string[]) => {
@@ -242,17 +147,18 @@ const getTags = (callback: Function = () => {}) => {
 // getTags()
 // 壁纸详情获取
 const getDetail = () => {
+  console.log("进入方法")
   const id = route.query.id as string
+  console.log(id)
   if (id) {
     album.detail(id).then((res: AlbumInter) => {
       res.createdAt = useFormat(res.createdAt, 'YYYY-MM-DD')
       res.updatedAt = useFormat(res.updatedAt, 'YYYY-MM-DD')
-      res.background_preview = window.uploader_ip + res.background
       detail.value = res
     })
   }
 }
-// getDetail()
+getDetail()
 // 获取图片列表
 const listGet = () => {
   list.loading = true
@@ -260,7 +166,7 @@ const listGet = () => {
   album.images({
     pageNum: list.page,
     pageSize: list.size,
-    id: list.filters.zid,
+    zid: list.filters.zid,
     name: list.filters.name,
     tag: list.filters.tag === '全部' ? '' : list.filters.tag
   }).then((res) => {
@@ -270,7 +176,7 @@ const listGet = () => {
     list.loading = false
   })
 }
-listGet()
+// listGet()
 // 操作栏回调
 function handleAction (type) {
   let ids = []
@@ -428,15 +334,15 @@ onActivated(() => {
   display: flex;
   flex-direction: column;
   .album-image-header {
-    width: calc(100% + 19px + 19px);
-    height: 250px;
+    //width: calc(100% + 19px + 19px);
+    height: 100%;
     flex-shrink: 0;
     background-color: #009688;
     background-size: 100% auto;
     background-position: center center;
-    margin-top: -19px;
-    margin-left: -19px;
-    padding: 20px 3%;
+    //margin-top: -19px;
+    //margin-left: -19px;
+    //padding: 20px 3%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;

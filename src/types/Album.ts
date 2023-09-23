@@ -35,11 +35,11 @@ export default class Album {
     return http('/small/page', params)
   }
   // 详情
-  detail (id: string) {
-    return http('/album/detail', { id })
+  detail (only: string) {
+    return http('/raw/detail', { only })
   }
   // 图片列表
-  images(params: { name: any; pageSize: number; id: any; tag: any; pageNum: number }) {
+  images(params: { name: any; pageSize: number; zid: any; tag: any; pageNum: number }) {
     return http('/small/page', params)
   }
   // 标签列表
