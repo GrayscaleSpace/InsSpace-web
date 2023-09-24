@@ -5,8 +5,8 @@ import useUserStore from "@/store/user";
 
 // 创建 Axios 实例
 const instance = axios.create({
-    // baseURL: 'https://pan.reaicc.com', // 替换成你的后端 API 地址
-    baseURL: 'http://127.0.0.1:8081', // 替换成你的后端 API 地址
+    baseURL: 'https://pan.reaicc.com', // 替换成你的后端 API 地址
+    // baseURL: 'http://127.0.0.1:8081', // 替换成你的后端 API 地址
 });
 
 // 发起 HTTP 请求的函数
