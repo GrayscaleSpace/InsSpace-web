@@ -130,7 +130,6 @@ const handleInput = (val) => {
   }, 1000)
 }
 
-
 const loadData = ref(false)
 
 const load = () => {
@@ -184,11 +183,12 @@ img {
 
 
 .container {
-  background-color: var(--theme-bg);
+  //background-color: var(--theme-bg);
   //max-width: 1240px;
-  max-height: 900px;
-  height: 95vh;
+  //max-height: 900px;
+  height: 100vh;
   display: flex;
+  justify-content: center;
   overflow: hidden;
   width: 100%;
   border-radius: 20px;
@@ -348,6 +348,7 @@ img {
 }
 
 .wrapper {
+  max-width: 1220px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;

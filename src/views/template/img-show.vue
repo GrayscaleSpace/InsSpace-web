@@ -5,7 +5,19 @@
         <div class="stream-area">
           <div class="video-stream">
 
-            <img class="bzImg" v-loading="loading" :src="detail.data.url" alt="">
+            <img v-if="loadError" :src="'/error.png'"/>
+<!--            <v-lazy-image class="bzImg"-->
+<!--                 v-loading="loading"-->
+<!--                 :src="detail.data.url"-->
+<!--                 @error="handleRenderError"-->
+
+<!--                 alt="">-->
+              <v-lazy-image muted=""
+                            :src="detail.data.url"
+                            class="bzImg"
+                            @load="hanldeLoad"
+                            @error="handleRenderError" :src-placeholder="placeholder"
+              ></v-lazy-image>
 
             <div class="video-detail">
               <div class="video-content">
@@ -220,14 +232,27 @@ function downloadImg(){
   // 模拟用户点击下载链接
   downloadLink.click();
 }
-function loading() {
+function hanldeLoad() {
   loaded.value = true
 }
+const loadError = ref(false)
+function handleRenderError() {
+  loadError.value = true
+}
+const placeholder = new URL('./loading.gif', import.meta.url).href
 </script>
+
 
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
-
+.bzImg {
+  max-width: 100%;
+  width: 100%;
+  border-radius: 20px 20px 20px 20px;
+  display: block;
+  cursor: pointer;
+  transition: 0.4s;
+}
 * {
   outline: none;
   box-sizing: border-box;
@@ -254,17 +279,18 @@ img {
 
 
 .container {
-  background-color: var(--theme-bg);
+  //background-color: var(--theme-bg);
   //max-width: 1240px;
-  max-height: 900px;
-  height: 95vh;
-  display: flex;
-  overflow: hidden;
+  //max-height: 900px;
+  height: 100vh;
+  //display: flex;
+  //justify-content: center;
+  //overflow: hidden;
   width: 100%;
   border-radius: 20px;
   font-size: 15px;
   font-weight: 500;
-  position: relative;
+  //position: relative;
 }
 
 .sidebar {
@@ -418,6 +444,7 @@ img {
 }
 
 .wrapper {
+  max-width: 1220px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -516,10 +543,14 @@ img {
 
 .main-container {
   display: flex;
-  flex-direction: column;
-  padding: 30px 30px 30px;
+  padding: 0 30px 30px;
   flex-grow: 1;
+  height: 100%;
   overflow: auto;
+  /* flex-direction: column-reverse; */
+  justify-content: center;
+  /* align-content: center; */
+  align-items: center;
 }
 
 .anim {
@@ -850,7 +881,7 @@ img {
 }
 
 .video-stream {
-  width: 50%;
+  //width: 50%;
   object-fit: cover;
   transition: 0.3s;
 
@@ -1372,13 +1403,5 @@ button.vjs-play-control.vjs-control.vjs-button {
 ::-webkit-scrollbar-thumb {
   background-color: rgb(21 20 26 / 63%);
   border-radius: 10px;
-}
-.bzImg {
-  max-width: 100%;
-  width: 100%;
-  border-radius: 20px 20px 20px 20px;
-  display: block;
-  cursor: pointer;
-  transition: 0.4s;
 }
 </style>

@@ -64,11 +64,11 @@ body {
   background-repeat: no-repeat;
   background-blend-mode: color-dodge;
   background-color: rgba(18, 21, 39, 0.86);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 1em 2em;
+  //display: flex;
+  //justify-content: center;
+  //align-items: center;
+  //flex-direction: column;
+  //padding: 1em 2em;
   width: 100%;
   height: 100vh;
   overflow: hidden;
