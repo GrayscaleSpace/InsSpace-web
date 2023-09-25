@@ -1283,7 +1283,7 @@ button.vjs-play-control.vjs-control.vjs-button {
     font-size: 14px;
   }
   .main-blog__author {
-    flex-direction: column-reverse;
+    //flex-direction: column-reverse;
     align-items: flex-start;
   }
   .author-detail {
