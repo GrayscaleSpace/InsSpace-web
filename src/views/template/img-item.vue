@@ -1,9 +1,10 @@
 <template>
   <div class="video anim" @click="detail" style="--delay: .4s">
-    <div class="video-time">{{ data.size }}</div>
+    <div class="video-time">{{ data.name }}</div>
     <div class="video-wrapper">
-<!--      <video muted="" v-if="loadError">-->
-<!--        <source :src="'src/views/template/loading1.mp4'"-->
+<!--      <video muted="" >-->
+<!--                <source-->
+<!--                    src=""-->
 <!--                type="video/mp4">-->
 <!--      </video>-->
 
@@ -23,12 +24,12 @@
       <!--             src="https://images.pexels.com/photos/1680172/pexels-photo-1680172.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"/>-->
       <!--      </div>-->
     </div>
-    <div class="video-by">{{ data.only }}</div>
-    <div class="video-name">{{ data.name }}</div>
-    <div class="video-view">
-      <!--      <span class="seperate video-seperate"></span>-->
-      {{ data.createTime }}
+<!--    <div class="video-by">{{ data.only }}</div>-->
+<!--    <div class="video-name">{{ data.name }}</div>-->
+    <div class="video-view ">666K
+      <span class="seperate video-seperate"></span>浏览
     </div>
+
   </div>
 </template>
 

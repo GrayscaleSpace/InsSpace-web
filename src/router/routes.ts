@@ -11,7 +11,7 @@ export const constRoutes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Gallery',
-    component: () => import('@/views/template/albumView2.vue'),
+    component: () => import('@/views/template/albumView2.vue' ),
     meta: { title: '壁纸' }
   },
   {
