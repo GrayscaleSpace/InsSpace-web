@@ -13,12 +13,21 @@
 
 <!--                 alt="">-->
               <v-lazy-image muted=""
+                            v-if="isLargeImage"
                             :src="detail.data.url"
                             class="bzImg"
                             @load="hanldeLoad"
+                            :width="3080"
+                            :height="500"
                             @error="handleRenderError" :src-placeholder="placeholder"
               ></v-lazy-image>
-
+            <!-- 如果图片尺寸不大于3840×2160像素，则显示原始图片 -->
+            <v-lazy-image
+                v-else
+                class="bzImg"
+                :src="detail.data.url"
+                alt="Original Image"
+            />
             <div class="video-detail">
               <div class="video-content">
                 <div class="video-p-wrapper anim" style="--delay: .1s">
@@ -240,11 +249,25 @@ function handleRenderError() {
   loadError.value = true
 }
 const placeholder = new URL('./loading.gif', import.meta.url).href
+
+const isLargeImage = () =>{
+  const img = new Image();
+  img.src =  detail.value.data.url;
+  // 判断图片尺寸是否大于3840×2160像素
+  return img.width > 3840 && img.height > 2160;
+}
 </script>
 
 
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
+/* 在满足条件时设置图片渲染大小为1067 × 600 px */
+@media (min-width: 3841px) {
+  .bzImg {
+    width: 1067px; /* 设置图片宽度为1067像素 */
+    height: 600px; /* 设置图片高度为600像素 */
+  }
+}
 .bzImg {
   max-width: 100%;
   width: 100%;
@@ -1404,4 +1427,5 @@ button.vjs-play-control.vjs-control.vjs-button {
   background-color: rgb(21 20 26 / 63%);
   border-radius: 10px;
 }
+
 </style>

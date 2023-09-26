@@ -45,7 +45,7 @@ export default class Image {
     return http('/image/update', params)
   }
   // 查询
-  async find (params: Filter) {
+  async find(params: { [p: string]: any; pageSize: number; pageNum: number }) {
     return http('/small/page', params)
   }
   // 详情

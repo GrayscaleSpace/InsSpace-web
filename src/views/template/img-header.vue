@@ -8,7 +8,7 @@
                stroke-linejoin="round" class="feather feather-check">
             <path d="M20 6L9 17l-5-5"/>
           </svg>
-          <img class="author-img" style="border-color: red;" src="https://cloud.mapleie.cn/d/6508f906585b4d8e5bc54ebea2c2cec87d2d030e/grays2_p9e82_qxdnyn2q.jpg"/>
+          <img class="author-img" style="border-color: red;" src=""/>
         </div>
 
         <div class="author-img__wrapper">
@@ -16,28 +16,28 @@
                stroke-linejoin="round" class="feather feather-check">
             <path d="M20 6L9 17l-5-5"/>
           </svg>
-          <img class="author-img" style="border-color: yellow;" src="https://cloud.mapleie.cn/d/6508f906585b4d8e5bc54ebea2c2cec87d2d030e/grays2_rhwkr_qaof5fcq.png"/>
+          <img class="author-img" style="border-color: yellow;" src=""/>
         </div>
         <div class="author-img__wrapper">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
                stroke-linejoin="round" class="feather feather-check">
             <path d="M20 6L9 17l-5-5"/>
           </svg>
-          <img class="author-img" style="border-color: blue;" src="https://cloud.mapleie.cn/d/6508f906585b4d8e5bc54ebea2c2cec87d2d030e/grays2_wxml4_no8qbsif.jpg"/>
+          <img class="author-img" style="border-color: blue;" src=""/>
         </div>
         <div class="author-img__wrapper">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
                stroke-linejoin="round" class="feather feather-check">
             <path d="M20 6L9 17l-5-5"/>
           </svg>
-          <img class="author-img" src="https://cloud.mapleie.cn/d/6508f906585b4d8e5bc54ebea2c2cec87d2d030e/grays2_pqhvn_wj5i9sw8.png"/>
+          <img class="author-img" src=""/>
         </div>
         <div class="author-img__wrapper">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
                stroke-linejoin="round" class="feather feather-check">
             <path d="M20 6L9 17l-5-5"/>
           </svg>
-          <img class="author-img" src="https://cloud.mapleie.cn/d/6508f906585b4d8e5bc54ebea2c2cec87d2d030e/grays2_hmfbd_7izyaeve.jpg"/>
+          <img class="author-img" src=""/>
         </div>
 <!--        <div class="author-detail">-->
 <!--          <div class="author-name"></div>-->
