@@ -20,13 +20,22 @@
       <p>通过使用本网站，您表明您已经阅读、理解并同意本免责声明的所有条款和条件。如您不同意本免责声明的任何部分，请停止使用本网站。</p>
 
       <p>如需法律建议或有关免责声明的特定问题，请咨询专业律师。</p>
+      <div class="bottom-button" style="text-align: center">
+        <el-button type="success" @click="isRead">我已阅读！</el-button>
+      </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "img-about"
+<script lang="ts" setup>
+import {useRouter} from "vue-router";
+
+const router = useRouter()
+
+const isRead = () => {
+  router.push({
+    path: '/',
+  });
 }
 </script>
 

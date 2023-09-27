@@ -71,22 +71,22 @@ body {
   //padding: 1em 2em;
   width: 100%;
   height: 100vh;
-  overflow: hidden;
+  //overflow: hidden;
 
-  &:before {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-            163deg,
-            rgba(31, 29, 43, 1) 21%,
-            rgba(31, 29, 43, 0.3113620448179272) 64%
-    );
-    opacity: 0.4;
-    content: "";
-  }
+  //&:before {
+  //  position: absolute;
+  //  left: 0;
+  //  top: 0;
+  //  width: 100%;
+  //  height: 100%;
+  //  background: linear-gradient(
+  //          163deg,
+  //          rgba(31, 29, 43, 1) 21%,
+  //          rgba(31, 29, 43, 0.3113620448179272) 64%
+  //  );
+  //  opacity: 0.4;
+  //  content: "";
+  //}
 }
 // @import 'reset.css';
 //@import '@/styles/font.scss';

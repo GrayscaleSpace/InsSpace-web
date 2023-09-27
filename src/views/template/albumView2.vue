@@ -429,6 +429,7 @@ img {
 
     .notify {
       position: relative;
+      cursor: pointer;
 
       svg {
         width: 20px;
