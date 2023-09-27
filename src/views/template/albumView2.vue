@@ -423,7 +423,7 @@ img {
       width: 10px;
       flex-shrink: 0;
       @media screen and (max-width: 575px) {
-        display: none;
+        //display: none;
       }
     }
 
@@ -447,7 +447,7 @@ img {
         border: 1px solid var(--theme-bg);
         top: -2px;
         @media screen and (max-width: 575px) {
-          display: none;
+          //display: none;
         }
       }
     }

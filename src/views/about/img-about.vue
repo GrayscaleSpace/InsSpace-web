@@ -51,6 +51,12 @@ const isRead = () => {
   color: white;
   text-indent: 2em;
 }
+/* 在手机浏览下将宽度更改为80% */
+@media (max-width: 767px) {
+  .about-content {
+    width: 80%;
+  }
+}
 /* 识别p标签中的强调文本 */
 p em {
   font-style: italic; /* 斜体 */
