@@ -662,7 +662,7 @@ img {
 .videos {
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-column-gap: 20px;
   grid-row-gap: 20px;
   @media screen and (max-width: 980px) {
