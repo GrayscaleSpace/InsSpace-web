@@ -373,7 +373,7 @@ img {
 }
 
 .wrapper {
-  max-width: 1220px;
+  max-width: 1500px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
