@@ -105,7 +105,7 @@ const router = useRouter()
 // 列表数据
 const list: ListInter<ImageInter> = reactive({
   page: 1,
-  size: 36,
+  size: 35,
   total: 0,
   loading: true,
   filters: {
