@@ -7,7 +7,6 @@ export const constRoutes: RouteRecordRaw[] = [
   //   component: () => import('@/views/login-register/login.vue'),
   //   meta: { title: '登录' }
   // },
-
   {
     path: '/',
     name: 'Gallery',
