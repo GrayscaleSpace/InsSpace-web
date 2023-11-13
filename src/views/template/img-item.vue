@@ -1,6 +1,6 @@
 <template>
   <div class="video anim" @click="detail" style="--delay: .4s">
-    <div class="video-time">{{ data.name }}</div>
+<!--    <div class="video-time">{{ data.name }}</div>-->
     <div class="video-wrapper">
 <!--      <video muted="" >-->
 <!--                <source-->
@@ -9,7 +9,7 @@
 <!--      </video>-->
 
       <v-lazy-image muted=""
-                    :src="data.url"
+                    :src="data.remoteUrl"
                     class="bzImg"
                     @load="hanldeLoad"
                     @error="handleRenderError" :src-placeholder="placeholder"
@@ -26,9 +26,9 @@
     </div>
 <!--    <div class="video-by">{{ data.only }}</div>-->
 <!--    <div class="video-name">{{ data.name }}</div>-->
-    <div class="video-view ">666K
-      <span class="seperate video-seperate"></span>浏览
-    </div>
+<!--    <div class="video-view ">666K-->
+<!--      <span class="seperate video-seperate"></span>浏览-->
+<!--    </div>-->
 
   </div>
 </template>

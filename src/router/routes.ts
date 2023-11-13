@@ -25,6 +25,12 @@ export const constRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/about/img-about.vue'),
     meta: { title: 'about', icon: 'Reading', role: [1, 2, 10], hidden: true, active: '/', keepAlive: true }
   },
+  {
+    path: '/template/img-show2',
+    name: 'ImgShow2',
+    component: () => import('@/views/template/img-show2.vue'),
+    meta: { title: 'about', icon: 'Reading', role: [1, 2, 10], hidden: true, active: '/', keepAlive: true }
+  },
   // {
   //   path: '/albums/images',
   //   name: 'AlbumsImages',

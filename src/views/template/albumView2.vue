@@ -52,7 +52,7 @@
             👆
           </div>
         </el-backtop>
-        <div class="small-header anim" style="--delay: .3s">壁纸（{{list.total}}）</div>
+        <div class="small-header anim" style="--delay: .3s">壁纸（{{list.data.length}}）</div>
         <div class="videos" v-if="list.data.length"
              v-infinite-scroll="load"
              :infinite-scroll-disabled="disabled">
@@ -60,7 +60,7 @@
               v-for="(item, index) in list.data"
               :data="item"
               :key="index"
-              :images="list.data.map(item => item.url)"
+              :images="list.data.map(res => item.remoteUrl)"
               @reload="listGet"
           >
           </img-item>
@@ -126,16 +126,18 @@ const listGet = () => {
     ...list.filters // 传递筛选条件
   }).then((res) => {
     // 设置总数据条数
-    list.total = res.total;
+    list.total = list.data.length;
 
     // 使用 useFormat 函数格式化记录的 createTime
     // const formattedCreateTime = useFormat(res.records.createTime);
 
     // 设置列表数据为获取到的记录，包括格式化后的 createTime
+
     list.data = res.records.map(record => ({
       ...record,
       createTime: useFormat(record.createTime)
     }));
+    console.log(list.data)
 
     // 标记加载完成
     list.loading = false;

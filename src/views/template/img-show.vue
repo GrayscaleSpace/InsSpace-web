@@ -197,7 +197,7 @@
       <div class="scrollbox" style="margin-right: -17px; margin-bottom: -17px">
         <img
           id="wallpaper"
-          :src="detail.data.url"
+          :src="detail.data.remoteUrl"
           data-wallpaper-id="vq29v3"
           data-wallpaper-height=""
           crossorigin="anonymous"
